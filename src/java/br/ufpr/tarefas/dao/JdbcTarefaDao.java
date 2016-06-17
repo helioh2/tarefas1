@@ -102,5 +102,31 @@ public class JdbcTarefaDao {
 		}
 		
 	}
+
+    public List<Tarefa> lista() {
+        String sql = "select * from tarefas";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			List<Tarefa> tarefas = new ArrayList<Tarefa>();
+			while (rs.next()) {
+				Tarefa tarefa = new Tarefa();
+				tarefa.setId(rs.getLong("id"));
+				tarefa.setDescricao(rs.getString("descricao"));
+				tarefa.setFinalizado(rs.getBoolean("finalizado"));
+                                Calendar dataFinalizacao = Calendar.getInstance();
+                                dataFinalizacao.setTimeInMillis(rs.getDate("dataFinalizacao").getTime());
+				tarefa.setDataFinalizacao(dataFinalizacao);
+				
+				tarefas.add(tarefa);
+			}
+			stmt.close();
+			return tarefas;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+}
+    }
         
 }
