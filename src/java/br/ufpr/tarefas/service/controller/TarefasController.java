@@ -7,7 +7,9 @@ package br.ufpr.tarefas.service.controller;
 
 import br.ufpr.tarefas.dao.JdbcTarefaDao;
 import br.ufpr.tarefas.modelo.Tarefa;
+import java.util.Calendar;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,4 +48,34 @@ public class TarefasController {
         return "tarefa/lista";
     }
 
+    @RequestMapping("removerTarefa")
+    public String remove(Tarefa tarefa) {
+        JdbcTarefaDao dao = new JdbcTarefaDao();
+        dao.remover(tarefa);
+        return "redirect:listaTarefas";
+    }
+
+    @RequestMapping("mostraTarefa")
+    public String mostra(Long id, Model model) {
+        JdbcTarefaDao dao = new JdbcTarefaDao();
+        model.addAttribute("tarefa", dao.buscaPorId(id));
+        return "tarefa/mostra";
+    }
+
+    @RequestMapping("alteraTarefa")
+    public String altera(Tarefa tarefa) {
+        JdbcTarefaDao dao = new JdbcTarefaDao();
+        dao.altera(tarefa);
+        return "redirect:listaTarefas";
+    }
+    
+    @RequestMapping("finalizarTarefa")
+    public void finaliza(Long id, HttpServletResponse response) {
+        JdbcTarefaDao dao = new JdbcTarefaDao();
+        Tarefa tarefa = dao.buscaPorId(id);
+        tarefa.setFinalizado(true);
+        tarefa.setDataFinalizacao(Calendar.getInstance());
+        dao.altera(tarefa);
+        response.setStatus(200);
+    }
 }

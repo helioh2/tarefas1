@@ -8,6 +8,7 @@ package br.ufpr.tarefas.modelo;
 import java.util.Calendar;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -20,7 +21,8 @@ public class Tarefa {
     @NotNull @Size(min=5)
     private String descricao;
     private boolean finalizado;
-    private Calendar dataFinalizacao = Calendar.getInstance();
+    @DateTimeFormat(pattern="dd/MM/yyyy")
+    private Calendar dataFinalizacao;
 
     public Tarefa() {
     }
