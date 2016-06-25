@@ -7,6 +7,8 @@ package br.ufpr.tarefas.service.controller;
 
 import br.ufpr.tarefas.dao.JdbcTarefaDao;
 import br.ufpr.tarefas.modelo.Tarefa;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -69,13 +71,31 @@ public class TarefasController {
         return "redirect:listaTarefas";
     }
     
+//    @RequestMapping("finalizarTarefa")
+//    public void finaliza(Long id, HttpServletResponse response) throws IOException {
+//        JdbcTarefaDao dao = new JdbcTarefaDao();
+//        Tarefa tarefa = dao.buscaPorId(id);
+//        tarefa.setFinalizado(true);
+//        tarefa.setDataFinalizacao(Calendar.getInstance());
+//        dao.altera(tarefa);
+//        String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(
+//                tarefa.getDataFinalizacao().getTime());
+//        response.getWriter().write(dataFormatada);
+//        response.setStatus(200);
+//    }
+    
+    
     @RequestMapping("finalizarTarefa")
-    public void finaliza(Long id, HttpServletResponse response) {
+    public String finaliza(Long id, Model model){
         JdbcTarefaDao dao = new JdbcTarefaDao();
         Tarefa tarefa = dao.buscaPorId(id);
         tarefa.setFinalizado(true);
         tarefa.setDataFinalizacao(Calendar.getInstance());
         dao.altera(tarefa);
-        response.setStatus(200);
+
+        model.addAttribute("tarefa",tarefa);
+        
+        return "tarefa/finalizada";
+        
     }
 }

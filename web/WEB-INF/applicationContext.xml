@@ -14,6 +14,11 @@
   <mvc:annotation-driven />
   <mvc:default-servlet-handler/>
 
+  <mvc:interceptors>
+  <bean class=
+    "br.ufpr.tarefas.service.controller.AutorizadorInterceptor"/>
+   </mvc:interceptors>
+  
   <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
   
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

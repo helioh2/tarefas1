@@ -5,6 +5,7 @@
         <script type="text/javascript" src="resources/js/jquery-3.0.0.js"></script>
     </head>
 <body>
+    <a href="logout">Sair do sistema</a>
   
   <a href="novaTarefa">Criar nova tarefa</a> 
 
@@ -18,12 +19,12 @@
     <th>Data de finalização</th>
   </tr>
   <c:forEach items="${tarefas}" var="tarefa">
-    <tr>
+    <tr id="tarefa_${tarefa.id}">
       <td>${tarefa.id}</td>
       <td>${tarefa.descricao}</td>
       <c:if test="${tarefa.finalizado eq false}">
           
-          <td id="tarefa_${tarefa.id}">
+          <td id="tarefafinalizada_${tarefa.id}">
               <a href="#" onclick="finalizarAgora(${tarefa.id})">
                   Finalizar agora! </a></td>
       
@@ -31,7 +32,7 @@
       <c:if test="${tarefa.finalizado eq true}">
         <td>Finalizado</td>
       </c:if>
-      <td>
+      <td id="datatarefa_${tarefa.id}">
         <fmt:formatDate 
           value="${tarefa.dataFinalizacao.time}" 
           pattern="dd/MM/yyyy"/>
@@ -44,10 +45,9 @@
   
   <script type="text/javascript">
       function finalizarAgora(id) {
-          $.get("finalizarTarefa?id="+id, function(dadosDeResposta) {
-              alert("Tarefa finalizada!");
-              //$("#tarefa_"+id).html("Finalizado!");
-              document.getElementById("tarefa_"+id).innerHTML = "Finalizado!";
+          $.post("finalizarTarefa", {'id':id}, function(dadosDeResposta) {
+              $("#tarefa_"+id).html(dadosDeResposta);
+              
           });
       }
   </script>    
